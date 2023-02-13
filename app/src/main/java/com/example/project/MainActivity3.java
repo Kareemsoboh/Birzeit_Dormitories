@@ -1,7 +1,5 @@
 package com.example.project;
 
-import static com.example.project.FileHelper.fileName;
-import static com.example.project.FileHelper.user;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,6 +27,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MainActivity3 extends AppCompatActivity {
@@ -36,7 +37,9 @@ public class MainActivity3 extends AppCompatActivity {
     Button signup , back ;
     ImageView imageView ;
     Animation top , bottom , right , left ;
-    
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public static ArrayList<users> user = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,19 +56,14 @@ public class MainActivity3 extends AppCompatActivity {
 
                 if(password.getText().toString().equals(password1.getText().toString()))
                 {
-                    if(!getLogin(new users(name.getText().toString(),password.getText().toString())))
+                    if(!getLogin(new users(name.getText().toString(),password.getText().toString(),email.getText().toString())))
                     {
-                        Intent intent = new Intent(MainActivity3.this,MainActivity4.class);
+                        Intent intent = new Intent(MainActivity3.this,MainActivity2.class);
                         startActivity(intent);
-                        user.add(new users(name.getText().toString(),password.getText().toString()));
 
-                       try {
-                           save("data.txt",name.getText().toString() + "," + password.getText().toString());
+                           db.collection("Users").add(new users(name.getText().toString(),password.getText().toString(),email.getText().toString()));
 
-                          // read("data.txt");
-                       } catch (Exception e){
 
-                       }
                     }
                     else
                     {
@@ -93,7 +91,7 @@ public class MainActivity3 extends AppCompatActivity {
     {
         for(int i = 0 ; i < user.size();i++)
         {
-            if(c.getName().equals(user.get(i).getName()))
+            if(c.getName().equals(user.get(i).getName())||c.getEmail().equals(user.get(i).getEmail()))
             {
                 return true ;
             }
@@ -140,39 +138,8 @@ public class MainActivity3 extends AppCompatActivity {
         email.setAnimation(right);
         password.setAnimation(right);
         password1.setAnimation(right);
-
         signup.setAnimation(bottom);
     }
-    public void save(String file,String massage) throws IOException {
-        try {
-            FileOutputStream fos = openFileOutput(file, MODE_APPEND);
-            massage+="\n";
-            fos.write(massage.getBytes());
-            fos.close();
-        }catch (Exception e)
-        {
-        e.printStackTrace();
-        Toast.makeText(MainActivity3.this,"error saving file",Toast.LENGTH_SHORT).show();
-        }
-    }
-    public void read(String file) throws FileNotFoundException {
-        try {
-             FileInputStream fos = openFileInput(file);
-             int size = fos.available();
-             byte []buffer = new byte[size];
-             fos.read(buffer);
-             fos.close();
-             String txt = new String(buffer);
-            Scanner scanner = new Scanner(txt);
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String x [] = line.split(",");
-                user.add(new users(x[0],x[1]));
-            }
-            scanner.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("hhhhhh");
-        }
-    }
+
+
 }

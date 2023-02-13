@@ -22,6 +22,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 public class CaptionedImagesAdapter
@@ -30,11 +32,15 @@ public class CaptionedImagesAdapter
     private String[] captions;
     private int[] imageIds;
     private String[] nums;
+    private double[] lats;
+    private double[] lngs;
 
-    public CaptionedImagesAdapter(String[] captions,int img[],String nums[]){
+    public CaptionedImagesAdapter(String[] captions,int img[],String nums[],double[] lats,double[] lngs ){
         this.captions = captions;
         this.imageIds=img;
         this.nums=nums;
+        this.lats=lats;
+        this.lngs=lngs;
 
     }
     @Override
@@ -79,7 +85,9 @@ public class CaptionedImagesAdapter
         cardView.setOnClickListener( new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                //
+                MapsMarkerActivity.latLng=new LatLng(lats[ps],lngs[ps]);
+                Intent intent = new Intent(v.getContext(),MapsMarkerActivity.class);
+                v.getContext().startActivity(intent);
             }
         });
     }
