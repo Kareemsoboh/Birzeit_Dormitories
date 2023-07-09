@@ -15,8 +15,40 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ph4" />
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="left"
+        android:gravity="center">
 
-    <TextView
+        <RadioButton
+            android:id="@+id/radButton1"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:checked="false"
+            android:padding="4dp"
+            android:text="User Login"
+
+            android:textColor="#353434"
+            android:textSize="20sp" />
+
+        <RadioButton
+            android:id="@+id/radButton2"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:checked="false"
+            android:padding="4dp"
+            android:text="Owner Login"
+            android:textColor="#353434"
+            android:textSize="20sp" />
+        </RadioGroup>
+
+
+<TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="20dp"
@@ -75,4 +107,19 @@
         android:text="SignUp"
 
         android:textSize="16dp"></Button>
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="An Owner of a Building ?"
+        android:textColor="#131111"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/ownerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign up here" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>

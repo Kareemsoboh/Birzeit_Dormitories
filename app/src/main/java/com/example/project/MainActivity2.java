@@ -19,6 +19,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,11 +36,12 @@ import java.util.List;
 public class MainActivity2 extends AppCompatActivity {
 
     static int counter = 0 ;
-    static TextView textView,textView1;
+    static TextView textView,textView1,txt;
     static EditText name , password ;
     static ImageView imageView ;
-    static Button login , signup ;
+    static Button login , signup,ownerSignup ;
     static Animation top,bottom ;
+    RadioGroup grp;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     public static ArrayList<users> user = new ArrayList<>();
 
@@ -54,6 +57,9 @@ public class MainActivity2 extends AppCompatActivity {
         extracted();
         readUsers();
         login.setOnClickListener(new View.OnClickListener() {
+            int selectedid = grp.getCheckedRadioButtonId();
+
+
             @Override
             public void onClick(View view) {
                 if(getLogin(new users(name.getText().toString(),password.getText().toString(),"")))
@@ -74,6 +80,13 @@ public class MainActivity2 extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        ownerSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity2.this,OwnerSignup.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -83,19 +96,22 @@ public class MainActivity2 extends AppCompatActivity {
         textView1 = findViewById(R.id.textView3);
         name = findViewById(R.id.name);
         password = findViewById(R.id.password);
+        txt = findViewById(R.id.textView6);
         login = findViewById(R.id.login);
         signup = findViewById(R.id.signup);
-
+        ownerSignup=findViewById(R.id.ownerButton);
         top = AnimationUtils.loadAnimation(this,R.anim.top);
         bottom = AnimationUtils.loadAnimation(this,R.anim.bottom);
-
+        grp = findViewById(R.id.radioGroup);
         imageView.setAnimation(top);
         textView.setAnimation(top);
         name.setAnimation(top);
         textView1.setAnimation(bottom);
         password.setAnimation(bottom);
+        txt.setAnimation(bottom);
         login.setAnimation(bottom);
         signup.setAnimation(bottom);
+        ownerSignup.setAnimation(bottom);
     }
 
     public static boolean getLogin(users c)
@@ -126,7 +142,7 @@ public class MainActivity2 extends AppCompatActivity {
 
                             // Add all to your list
                             user.addAll(types);
-                            Toast.makeText(getApplicationContext(), "Success2", Toast.LENGTH_LONG).show();
+                           // Toast.makeText(getApplicationContext(), "Success2", Toast.LENGTH_LONG).show();
                         }
                     }}).addOnFailureListener(new OnFailureListener() {
                     @Override

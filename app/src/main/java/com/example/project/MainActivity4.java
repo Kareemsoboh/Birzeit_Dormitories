@@ -65,7 +65,6 @@ public class MainActivity4 extends AppCompatActivity {
     Animation top , right ;
     RadioGroup radioGroup;
     RadioButton selectedRadioButton;
-    EditText search;
     List<Home> result = new ArrayList<>();
     SearchView searchView ;
     public static FirebaseFirestore db;

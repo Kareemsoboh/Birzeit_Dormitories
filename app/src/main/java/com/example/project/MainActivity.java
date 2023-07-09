@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView imageView ;
     Animation top , bottom ;
     static int counter = 0 ;
+    ArrayList<Owner> owners ;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 counter = 1 ;
                 getListItems();
-                Intent intent = new Intent(MainActivity.this,MainActivity2.class);
+                Intent intent = new Intent(MainActivity.this,FirstView.class);
                 startActivity(intent);
             }
         },4000);
@@ -81,7 +82,32 @@ public class MainActivity extends AppCompatActivity {
 
                             // Add all to your list
                             MainActivity4.c2.addAll(types);
-                            Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
+                        }
+                    }}).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), "Error getting data!!!", Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+    public void getOwners(){
+        db.collection("Owners").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot documentSnapshots) {
+                        if (documentSnapshots.isEmpty()) {
+                            Log.d(TAG, "onSuccess: LIST EMPTY");
+                            return;
+                        } else {
+                            // Convert the whole Query Snapshot to a list
+                            // of objects directly! No need to fetch each
+                            // document.
+                            List<Owner> types = documentSnapshots.toObjects(Owner.class);
+
+                            // Add all to your list
+                            owners.addAll(types);
+                            //Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
                         }
                     }}).addOnFailureListener(new OnFailureListener() {
                     @Override
